@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Love! ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fff5f5;
+            color: #333;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        
+        #countdown {
+            background: #ff6b6b;
+            color: white;
+            padding: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        #login-page {
+            display: none;
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        #login-page h2 {
+            font-family: 'Dancing Script', cursive;
+            color: #ff6b6b;
+            font-size: 2rem;
+        }
+        
+        #login-page input {
+            width: 80%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: 2px solid #ffb8b8;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        #login-page button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            margin: 1rem 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        
+        #login-page button:hover {
+            background: #ff5252;
+        }
+        
+        #clue {
+            font-style: italic;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+        
+        #signup-message {
+            display: none;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+        
+        #birthday-surprise {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff5f5;
+            z-index: 100;
+            overflow-y: auto;
+            padding: 2rem 0;
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            animation: float 8s infinite ease-in;
+            z-index: 1;
+        }
+        
+        .balloon:before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: #888;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        #surprise-message {
+            position: relative;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #ff6b6b;
+            z-index: 10;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+        
+        #delayed-message {
+            display: none;
+            position: relative;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 200;
+            max-width: 500px;
+            margin: 2rem auto;
+            border: 2px solid #ff6b6b;
+        }
+
+        #delayed-message-content {
+            max-height: 50vh;
+            overflow-y: auto;
+            padding: 0 1rem;
+            text-align: left;
+        }
+
+        #delayed-message::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #delayed-message::-webkit-scrollbar-track {
+            background: #ffecec;
+            border-radius: 10px;
+        }
+
+        #delayed-message::-webkit-scrollbar-thumb {
+            background: #ff6b6b;
+            border-radius: 10px;
+        }
+
+        /* VIRTUAL CAKE STYLES */
+        #cake-container {
+            position: relative;
+            width: 250px;
+            margin: 2rem auto;
+        }
+        
+        #cake {
+            width: 100%;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        #cake:hover {
+            transform: scale(1.05);
+        }
+        
+        .candle {
+            position: absolute;
+            width: 10px;
+            height: 40px;
+            background: linear-gradient(to bottom, #fff, #ff6b6b);
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .flame {
+            position: absolute;
+            width: 15px;
+            height: 25px;
+            background: #ffef5e;
+            border-radius: 50% 50% 20% 20%;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px #ff9e00;
+            animation: flicker 0.5s infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0% { opacity: 1; height: 25px; }
+            100% { opacity: 0.8; height: 20px; }
+        }
+        
+        /* TIMELINE STYLES */
+        .timeline {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-event {
+            position: relative;
+            padding: 1rem 1rem 1rem 2rem;
+            margin: 1rem 0;
+            border-left: 3px solid #ff6b6b;
+        }
+        
+        .timeline-event:before {
+            content: "❤️";
+            position: absolute;
+            left: -12px;
+            top: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .confetti {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: confettiFall 3s linear forwards;
+            z-index: 300;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="countdown">
+        <h2>Counting down to your special day...</h2>
+        <p id="timer">Loading...</p>
+    </div>
+    
+    <div id="login-page">
+        <h2>Way to My Heart ❤️</h2>
+        <p>Enter the secret keys to unlock your surprise!</p>
+        <div>
+            <input type="text" id="username" placeholder="Your name">
+            <input type="password" id="password" placeholder="Password">
+            <p id="clue">Clue: The name I call you when I'm feeling extra sweet.</p>
+            <button type="button" id="unlock-btn">Unlock</button>
+            <button type="button" id="signup-btn">Sign Up</button>
+            <p id="signup-message">🚪 Door closed and sealed. Nice try! 😘</p>
+        </div>
+    </div>
+    
+    <div id="birthday-surprise">
+        <h1 id="surprise-message">Happy Birthday Mendell!!!</h1>
+        
+        <!-- VIRTUAL CAKE (SVG VERSION) -->
+        <div id="cake-container">
+            <div class="candle">
+                <div class="flame"></div>
+            </div>
+            <svg id="cake" viewBox="0 0 200 150">
+                <!-- Cake base -->
+                <rect x="25" y="50" width="150" height="60" rx="5" fill="#f9c" stroke="#d48" stroke-width="2"/>
+                <!-- Cake top -->
+                <path d="M25,50 Q100,20 175,50" fill="#f6a" stroke="#d48" stroke-width="2"/>
+                <!-- Frosting decorations -->
+                <circle cx="50" cy="60" r="5" fill="#fff"/>
+                <circle cx="80" cy="55" r="5" fill="#fff"/>
+                <circle cx="110" cy="60" r="5" fill="#fff"/>
+                <circle cx="140" cy="55" r="5" fill="#fff"/>
+                <circle cx="170" cy="60" r="5" fill="#fff"/>
+            </svg>
+            <p>Click the cake to blow out the candle!</p>
+        </div>
+        
+        <!-- TIMELINE -->
+        <div class="timeline">
+            <h2>Our Journey Together</h2>
+            
+            <div class="timeline-event">
+                <span class="timeline-date">February 2022</span>
+                <p>Everything started here!!</p>
+            </div>
+            
+            <div class="timeline-event">
+                <span class="timeline-date">May 2022</span>
+                <p>Studied together for public exams</p>
+            </div>
+            
+            <div class="timeline-event">
+                <span class="timeline-date">August 2022</span>
+                <p>Officially started relationship</p>
+            </div>
+            
+            <div class="timeline-event">
+                <span class="timeline-date">December 2022</span>
+                <p>Kissed as christmas gift😚</p>
+            </div>
+            
+            <div class="timeline-event">
+                <span class="timeline-date">February 2023</span>
+                <p>Celebrated my birthday</p>
+            </div>
+
+            <div class="timeline-event">
+                <span class="timeline-date">May 2023</span>
+                <p>Enjoyed vacation together</p>
+            </div>
+            <div class="timeline-event">
+                <span class="timeline-date">December 2023</span>
+                <p>Went and came back together for christmas and New year</p>
+            </div>
+
+            <div class="timeline-event">
+                <span class="timeline-date">2024 - till this minute</span>
+                <p>Watched movies as much as possible, created lotz of memories to cherish through fights and makeup.</p>
+            </div>
+
+        </div>
+        
+        <div id="delayed-message">
+            <h2 style="color: #ff6b6b; font-family: 'Dancing Script', cursive;">Hey Mine!!</h2>
+            <div id="delayed-message-content">
+                <p style="font-size: 1.1rem; line-height: 1.6;">
+                    Happy Birthday to who makes me happy, laugh out of heart, 
+                    cry out loudly at times and loves me even when I go crazy!!<br><br>
+                    I get the same peace that I get from seeing stars in the night sky from you at times...✨
+                    When we look back, lots of fights and worst times have passed in these past 2 years, 
+                    which feels like a month. Yet we are having memories that fill our hearts and eyes when we think of those.
+                    I have never left you go back without disappoint whenever we meet!! I hope we can see more often to disappoint you.
+                    I miss you daily more than the times I drink water a day!! 😫. 
+                    In these years i have learnt what life is, how to solve. You were too mature to handle this immature kiddoo<br><br>
+                    I respect your goals, I want to be a good support for you throughout the life!!
+                    I want and hope to see you achieving all those goals one by one, one by one.🫡😚
+                    Want ever the problems that you gonna face, remember itz not yours its our.<br><br>
+                    I love you as much as I love stars and more than that!!✨
+                    Once again HAPPY BIRTHDAY to my boyfriend, friend, bestie, brother and so on...😘
+                </p>
+            </div>
+            <div style="font-size: 2rem; margin-top: 1rem;">❤️</div>
+        </div>
+    </div>
+    
+    <script>
+        // COUNTDOWN TO FUTURE DATE
+        const countdown = () => {
+            const targetDate = new Date('April 25, 2025 00:00:00').getTime();
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            
+            if (diff <= 0) {
+                document.getElementById('countdown').style.display = 'none';
+                document.getElementById('login-page').style.display = 'block';
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('timer').innerHTML = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        };
+        
+        setInterval(countdown, 1000);
+        countdown();
+        
+        // LOGIN CHECK
+        document.getElementById('unlock-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === "Sam Rehoboth" && password === "mendell") {
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('countdown').style.display = 'none';
+                document.getElementById('birthday-surprise').style.display = 'block';
+                
+                // Create balloons
+                for (let i = 0; i < 20; i++) {
+                    const balloon = document.createElement('div');
+                    balloon.className = 'balloon';
+                    balloon.style.left = `${Math.random() * 100}%`;
+                    balloon.style.background = `hsl(${Math.random() * 60 + 330}, 100%, 70%)`;
+                    balloon.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                    balloon.style.animationDelay = `${Math.random() * 5}s`;
+                    document.getElementById('birthday-surprise').appendChild(balloon);
+                }
+                
+                // Show delayed message after 5 seconds
+                setTimeout(function() {
+                    document.getElementById('delayed-message').style.display = 'block';
+                    
+                    // Create floating hearts
+                    for (let i = 0; i < 30; i++) {
+                        const heart = document.createElement('div');
+                        heart.className = 'heart-float';
+                        heart.innerHTML = '❤️';
+                        heart.style.left = `${Math.random() * 100}%`;
+                        heart.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                        heart.style.animationDelay = `${Math.random() * 2}s`;
+                        document.body.appendChild(heart);
+                    }
+                }, 5000);
+            } else {
+                alert("Incorrect! Try again ❤️");
+            }
+        });
+        
+        // SIGN UP TRAP
+        document.getElementById('signup-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('signup-message').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('signup-message').style.display = 'none';
+            }, 3000);
+        });
+
+        // CAKE CANDLE BLOW EFFECT
+        document.getElementById('cake').addEventListener('click', function() {
+            const flame = document.querySelector('.flame');
+            flame.style.display = 'none';
+            
+            // Add confetti effect
+            for (let i = 0; i < 20; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.innerHTML = ['🎉', '🎊', '✨', '❤️', '🎈'][Math.floor(Math.random() * 5)];
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                document.getElementById('cake-container').appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
